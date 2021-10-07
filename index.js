@@ -1,7 +1,7 @@
 const express = require('express')
+const mongooseConfig = require('./src/data/mongoose-config')
 const app = express()
 
-app.use(express.json({ limit: '50mb' }))
 app.use(express.urlencoded({ limit: '50mb', extended: true, parameterLimit: 50000 }))
 
 app.use(express.json())
@@ -12,9 +12,7 @@ app.use(function (_, res, next) {
     next()
 })
 
-const mongoose = require('mongoose')
-
-mongoose.connect("mongodb+srv://admin:admin123@restaurant.gkocs.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
+mongooseConfig();
 
 app.get('/', (_, res) => {
     res.send('API Online...')
