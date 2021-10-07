@@ -2,6 +2,8 @@ const express = require('express')
 const mongooseConfig = require('./src/data/mongoose-config')
 const app = express()
 
+const addRegisterController = require('./src/controllers/register-controller')
+
 app.use(express.urlencoded({ limit: '50mb', extended: true, parameterLimit: 50000 }))
 
 app.use(express.json())
@@ -17,6 +19,8 @@ mongooseConfig();
 app.get('/', (_, res) => {
     res.send('API Online...')
   });
+
+addRegisterController(app)
 
 app.listen(3001, () => {
     console.log(`Servidor rodando... http://localhost:3001/`)
