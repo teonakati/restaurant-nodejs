@@ -1,3 +1,5 @@
+require('dotenv').config()
+
 const express = require('express')
 const mongooseConfig = require('./src/data/mongoose-config')
 const app = express()

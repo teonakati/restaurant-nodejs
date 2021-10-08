@@ -34,33 +34,35 @@ router.post('/login', (req, res) => {
     const { email, password } = req.body
 
     if (!email || !password) {
-        res.status(400).send({ message: "E-mail e senha são campos obrigatórios." })
-        return
+        return res.status(400).send({ message: "E-mail e senha são campos obrigatórios." })
     }
 
     Restaurant.findByEmail(email)
         .then((result) => {
             if (result && bcrypt.compareSync(password, result.password)) {
-                const token = jwt.sign(
-                    { email },
-                    "SAPOKAY",
-                    { expiresIn: "2h" }
-                )
-                
+
                 const response = result.toJSON()
-                
-                response.token = token
 
                 delete response.__v
-                
-                res.status(200).send(response)
+
+                delete response.password
+
+                const token = jwt.sign(
+                    { response },
+                    process.env.SECRET_TOKEN_KEY,
+                    { expiresIn: "2h" }
+                )
+
+                response.token = token
+
+                return res.status(200).send(response)
             }
             else {
                 if (result) {
-                    res.status(400).send({ message: "E-mail ou senha inválidos." })
+                    return res.status(400).send({ message: "E-mail ou senha inválidos." })
                 }
                 else {
-                    res.status(400).send({ message: "E-mail não encontrado." })
+                    return res.status(400).send({ message: "E-mail não encontrado." })
                 }
             }
         })
