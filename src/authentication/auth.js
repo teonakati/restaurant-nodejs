@@ -8,8 +8,8 @@ module.exports = (req, res, next) => {
 
     jwt.verify(token, process.env.SECRET_TOKEN_KEY, (err, user) => {
         if (err) return res.status(403)
+        req.user = user.response
 
-        req.user = user
         next()
     })
 }

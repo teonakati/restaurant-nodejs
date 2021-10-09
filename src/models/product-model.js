@@ -2,6 +2,7 @@ const mongoose = require('mongoose')
 
 const schema = new mongoose.Schema(
     {
+        restaurantId: { type: String, required: true },
         name: { type: String, required: true },
         brand: { type: String, required: true },
         description: { type: String, required: true },
@@ -9,4 +10,9 @@ const schema = new mongoose.Schema(
     }
 )
 
-module.exports = mongoose.model('Product', schema)
+const Product = mongoose.model('Product', schema)
+
+exports.create = (body) => {
+    const product = new Product(body)
+    return product.save()
+}

@@ -1,11 +1,14 @@
 require('dotenv').config()
 
 const express = require('express')
+const cors = require('cors')
 const mongooseConfig = require('./src/data/mongoose-config')
 const app = express()
 
 const addRegisterController = require('./src/controllers/register-controller')
+const addProductController = require('./src/controllers/product-controller')
 
+app.use(cors())
 app.use(express.urlencoded({ limit: '50mb', extended: true, parameterLimit: 50000 }))
 
 app.use(express.json())
@@ -23,6 +26,7 @@ app.get('/', (_, res) => {
   });
 
 addRegisterController(app)
+addProductController(app)
 
 app.listen(3001, () => {
     console.log(`Servidor rodando... http://localhost:3001/`)
